@@ -23,13 +23,25 @@
 </head>
 <body>
   <!-- Loader -->
-  <div class="loader" aria-hidden="true">
-    <div class="loader-inner">
-      <img class="loader-logo" src="assets/MHND_Favicon.svg" alt="MHND loading">
-      <div class="bar"></div>
-      <div class="tip">Loading portfolio…</div>
+<div class="loader" aria-hidden="true">
+  <div class="loader-inner">
+    <div class="emblem-wrap">
+      <img class="emblem" src="assets/MHND_Secondary_Logo_Colored.png" alt="MHND emblem">
+      <svg class="ring" width="220" height="220" viewBox="0 0 220 220" role="img" aria-label="Loading">
+        <!-- track -->
+        <rect x="10" y="10" width="200" height="200" rx="28" ry="28"
+              fill="none" stroke="#1a1a1a" stroke-width="10"/>
+        <!-- progress (0→100 via dashoffset) -->
+        <rect class="ring-progress" x="10" y="10" width="200" height="200" rx="28" ry="28"
+              fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round"
+              pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
+      </svg>
     </div>
+    <div class="percent" id="loaderPct">0%</div>
+    <div class="tip">Loading portfolio…</div>
   </div>
+  <noscript><style>.loader{display:none!important}</style></noscript>
+</div>
 
   <!-- Header -->
   <header>
