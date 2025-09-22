@@ -1,20 +1,48 @@
-// Hide as soon as DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  const l = document.querySelector('.loader');
-  setTimeout(() => { if (l) l.classList.add('hide'); }, 250); // tiny delay for smoothness
-});
+// Loader with progress ring
+(function(){
+  const ring = () => document.querySelector('.ring-progress');
+  const pct = () => document.getElementById('loaderPct');
+  let progress = 0, done = false;
 
-// Also hide again when everything finishes (double safety)
-window.addEventListener('load', () => {
-  const l = document.querySelector('.loader');
-  if (l && !l.classList.contains('hide')) l.classList.add('hide');
-});
+  // update stroke + percentage text
+  function setProgress(val){
+    progress = Math.max(0, Math.min(100, val));
+    if (ring()) ring().style.strokeDashoffset = String(100 - progress);
+    if (pct()) pct().textContent = Math.round(progress) + "%";
+  }
 
-// Absolute failsafe: if something blocks events, bail out anyway
-setTimeout(() => {
-  const l = document.querySelector('.loader');
-  if (l) l.classList.add('hide');
-}, 4000);
+  // gradual fill
+  let interval;
+  document.addEventListener('DOMContentLoaded', () => {
+    setProgress(0);
+    interval = setInterval(() => {
+      if (progress < 95) {
+        setProgress(progress + 0.8); // slower growth → cinematic feel
+      }
+    }, 60); // every 60ms
+  });
+
+  // finish on load
+  window.addEventListener('load', () => finish());
+  setTimeout(() => finish(), 7000); // failsafe max 7s
+
+  function finish(){
+    if (done) return;
+    done = true;
+    clearInterval(interval);
+    // animate up to 100
+    const step = () => {
+      if (progress < 100){
+        setProgress(progress + (100 - progress)*0.2);
+        requestAnimationFrame(step);
+      } else {
+        const l = document.querySelector('.loader');
+        if (l) l.classList.add('hide');
+      }
+    };
+    step();
+  }
+})();
 
 // Year stamp
 document.addEventListener('DOMContentLoaded', () => {
